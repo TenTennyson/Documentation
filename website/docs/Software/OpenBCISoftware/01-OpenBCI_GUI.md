@@ -2,9 +2,10 @@
 id: GUIDocs
 title: The OpenBCI GUI
 ---
+
 ![image](../../assets/SoftwareImages/OpenBCISoftware/GUI-V4-Screenshot.jpg)
 
-The OpenBCI GUI is OpenBCI's powerful software tool for visualizing, recording, and streaming data from the OpenBCI Boards. Data can be displayed in live-time, played back, saved to your computer in .txt format, as well as streamed in live-time to third-party software such as MATLAB. 
+The OpenBCI GUI is OpenBCI's powerful software tool for visualizing, recording, and streaming data from the OpenBCI Boards. Data can be displayed in live-time, played back, saved to your computer in .txt format, as well as streamed in live-time to third-party software such as MATLAB.
 It can be launched as a standalone application or as a sketch from Processing (a Java-based programming language). In this guide, we will cover both scenarios.
 
 ## Hardware/Driver Setup for OpenBCI_GUI
@@ -13,15 +14,23 @@ Shown below are the three OpenBCI Boards that can be used with the OpenBCI GUI.
 
 ![image](../../assets/SoftwareImages/OpenBCISoftware/labelledBoards.jpg)
 
-### Cyton and Cyton+Daisy on macOS/Windows/Linux
+### Cyton and Cyton+Daisy Drivers
 
-If it’s your first time working with OpenBCI and you own the Cyton or Cyton+Daisy, [make sure to install the latest FTDI driver](https://www.ftdichip.com/Drivers/VCP.htm) for your operating system. This installation is required to establish a clean connection with the OpenBCI Cyton and Cyton+Daisy hardware. 
+If it’s your first time working with OpenBCI and you own the Cyton or Cyton+Daisy, [make sure to install the latest FTDI driver](https://www.ftdichip.com/Drivers/VCP.htm) for your operating system.
+
+:::important
+**The FTDI driver is only necessary for Windows 8, Windows 10, and Mac OS X 10.9 through 10.15. If you are running a Mac that is mid 2015 or newer, you do not need to install the FTDI driver!**
+:::
 
 ### Ganglion on macOS/Windows/Linux
 
 **The OpenBCI Ganglion uses Bluetooth LE (aka Bluetooth Smart, Bluetooth 4.0). In order to use the Ganglion, you need a [small USB Dongle](https://shop.openbci.com/products/ganglion-dongle).**
 
 _Note: The [CSR Dongle](https://github.com/openbci-archive/Docs/blob/master/Deprecated%20Docs/Setup_CSR_Dongle.md) is no longer supported._ We recommend using the [newer Ganglion Dongle](https://shop.openbci.com/products/ganglion-dongle).
+
+:::important MacOS BLE Workaround
+If you are running MacOS 11+ and having issues streaming your Ganglion, see the [MacOS BLE workaround](Troubleshooting/MacOS_Ganglion_BLE_Workaround.md).
+:::
 
 ### WiFi Shield
 
@@ -40,8 +49,7 @@ Before trying to connect to any OpenBCI boards on Linux, you need to make sure y
         - Type `sudo usermod -a -G dialout <username>` in terminal.
         - Example: `sudo usermod -a -G dialout susieQ`
 3.  Restart Ubuntu
-4.  Try "id" command again
-        - Repeat step one
+4.  Try "id" command again - Repeat step one
 
 </details><p />
 
@@ -99,8 +107,8 @@ On Linux, there is no way to force scaling. However, here is a <a href="https://
 
 **Important Notes:**
 
--   In some cases, there may be issues with the way your machine handles the BLE application that enables communication with the Ganglion Board.
--   If you run into additional issues, please visit the [OpenBCI_GUI Section](https://openbci.com/forum/index.php?p=/categories/openbci_gui) of our Forum
+- In some cases, there may be issues with the way your machine handles the BLE application that enables communication with the Ganglion Board.
+- If you run into additional issues, please visit the [OpenBCI_GUI Section](https://openbci.com/forum/index.php?p=/categories/openbci_gui) of our Forum
 
 ### Running on macOS
 
@@ -170,17 +178,17 @@ The OpenBCI GUI displays up to six customizable windows in twelve layouts! You c
 
 ### Impedance Testing
 
-The impedance widget is a valuable tool for evaluating electrode contact before data acquisition. 
-Press `Test` to start impedance test on an individual channel. 
-    
+The impedance widget is a valuable tool for evaluating electrode contact before data acquisition.
+Press `Test` to start impedance test on an individual channel.
+
 The impedance value is in colored font as a visual guide to the pre-set thresholds. A red impedance value means you should adjust your electrodes, part your hair, add gel, use paste, or such measures as appropriate for the electrode you’re using. Experienced users can also adjust these thresholds in the bracket-field beneath the table.
 
 :::info
-During the impedance test, the board sends a small current through the selected channel to obtain the impedance value. 
+During the impedance test, the board sends a small current through the selected channel to obtain the impedance value.
 **For this reason, you won't be able to stream data on a channel and obtain the impedance value simultaneously from the channel.**
 :::
 
-The screengrab below shows the GUI Impedance Widget for Cyton:
+The screenshot below shows the GUI Impedance Widget for Cyton:
 ![GUI Impedance Widget Screenshot](../../assets/SoftwareImages/OpenBCISoftware/GUI_5.1.0_cyton_impedance.png)
 
 To test impedance for Ganglion, use the Ganglion Signal Widget.
@@ -221,6 +229,27 @@ This method can be more reliable and quicker to implement than sending Time Seri
 
 ![BrainFlow Streamer over Network Option](../../assets/SoftwareImages/OpenBCISoftware/OpenBCI_GUI-BrainFlowStreamerNetworkSetting_Screenshot.png)
 
+#### GUI To GUI Data Streaming
+
+The OpenBCI GUI can stream data to another OpenBCI GUI using the BrainFlow streamer. Since this is a one-to-many [multicast](https://en.wikipedia.org/wiki/Multicast), it is possible to receive the stream from multiple devices simultaneously. To start the networked GUI stream on the host machine:
+
+1. Start the OpenBCI GUI and select your board type.
+2. Toggle on the **network** option under the BrainFlow Streamer settings.
+
+![BrainFlow streamer](../../assets/SoftwareImages/OpenBCISoftware/Brainflow_streamer.png)
+
+3. Enter the IP address and port for your stream. You need to be able to reach this IP address. The easiest way to do this is using a LAN or VLAN network. You can use a VPN to communicate with devices outside your local network.
+4. Start session.
+ 
+To receive this stream on a different machine:
+
+1. Open the GUI and select **Streaming (from external)**. 
+
+![Streaming from external](../../assets/SoftwareImages/OpenBCISoftware/streaming_from_external.png)
+
+2. Enter the IP address, port, and board type of the data stream.
+3. Start session.
+
 ### GUI Keyboard Shortcuts
 
 **Use the spacebar to start or stop the data stream!**
@@ -233,53 +262,71 @@ This method can be more reliable and quicker to implement than sending Time Seri
 
 Expert Mode Keyboard Shortcuts:
 
--   Other than spacebar, you can press 's' to stop data stream, and 'b' to begin, or start the data stream.
+- Other than spacebar, you can press 's' to stop data stream, and 'b' to begin, or start the data stream.
 
--   You can _use lowercase 'k' to set "Bias Don't Include"_ on all channels, or _lowercase 'l' to set "Bias Include"_ on all channels.
+- You can _use lowercase 'k' to set "Bias Don't Include"_ on all channels, or _lowercase 'l' to set "Bias Include"_ on all channels.
 
--   **Press lowercase 'd' to set all channels settings to default.**
+- **Press lowercase 'd' to set all channels settings to default.**
 
--   Using an _English keyboard_, you can deactivate channels 1-16 using:
-    -   1,2,3,4,5,6,7,8
-    -   q,w,e,r,t,y,u,i
+- Using an _English keyboard_, you can deactivate channels 1-16 using:
 
--   Similarly, activate channels 1-16 using:
-    -   !, @, #, $, %, ^, &, \*
-    -   Q,W,E,R,T,Y,U,I
+  - 1,2,3,4,5,6,7,8
+  - q,w,e,r,t,y,u,i
 
--   **Take a screenshot of the GUI using lowercase 'm'!** It will be saved to _/Documents/OpenBCI_GUI/Settings/_.
+- Similarly, activate channels 1-16 using:
 
--   **Enter presentation mode using Enter (Win), or Return (Mac).**
+  - !, @, #, $, %, ^, &, \*
+  - Q,W,E,R,T,Y,U,I
 
--   To change to the alternate color scheme, use '{"{"}'.
+- **Take a screenshot of the GUI using lowercase 'm'!** It will be saved to _/Documents/OpenBCI_GUI/Settings/_.
+
+- **Enter presentation mode using Enter (Win), or Return (Mac).**
+
+- To change to the alternate color scheme, use '{"{"}'.
 
 ## Running the OpenBCI GUI from the Processing IDE
 
 **Most users should start by [running the standalone OpenBCI GUI](#running-the-openbci_gui). The Processing IDE is for adding features, modifying existing code, or testing development versions.**
 
-The OpenBCI GUI was built using [Processing](https://processing.org/), a popular, Java-based creative coding framework. If you are interested in adding features or modifying the existing code, it is really easy to do so if you are familiar with Java. If you're not familiar with Java, don't fret! Processing is one of the easiest software packages to pick up as a beginner coder.
+The OpenBCI GUI is built using [Processing 4](https://processing.org/), a popular, Java-based creative coding framework. If you are interested in adding features or modifying the existing code, it is really easy to do so if you are familiar with Java. If you're not familiar with Java, don't fret! Processing is one of the easiest software packages to pick up as a beginner coder.
 
-The things you will need to run the OpenBCI GUI in Processing are:  
+The things you will need to run the OpenBCI GUI in Processing are:
 
--   [Processing App](https://processing.org/download/?processing)
--   [OpenBCI GUI Sketch](https://github.com/OpenBCI/OpenBCI_GUI)
+- [Processing App](https://processing.org/download)
+- [OpenBCI GUI Sketch](https://github.com/OpenBCI/OpenBCI_GUI)
 
-First, go to processing.org and download the latest version of Processing. [Here is a walkthrough on how to install Processing on Ubuntu Linux.](http://www.artsnova.com/processing/installing-processing-ubuntu-linux-tutorial.html)
+### Installing Processing 4
 
-Go ahead and move it to your `Applications` folder, and launch the application. If this is the first time that you are running Processing, it will create what it calls it's `Sketch` folder in the following locations:  
+First, go to Processing's website and [download the latest version of Processing](https://processing.org/download). For more information on Processing, you can review the official [Processing Getting Started Guide](https://processing.org/tutorials/gettingstarted) or the [Processing Documentation](https://processing.org/environment).
 
- On a Mac `Users/<user-name>/Documents/Processing`  
- On Windows `C:\Users\<user-name>\Documents\Processing`  
- On Linux `/home/<user-name>/sketchbook`  
+Go ahead and install the Processing application as you normally would for your operating system. If this is the first time that you are running Processing, it will create what it calls it's `Sketch` folder in the following locations:
 
-![GUI repo](../../assets/SoftwareImages/OpenBCISoftware/ganglion_GUI-repo.png)
+- On a Mac -`Users/<user-name>/Documents/Processing`  
+- On Windows - `C:\Users\<user-name>\Documents\Processing`  
+- On Linux -`/home/<user-name>/sketchbook`
 
-The OpenBCI GUI code repository is located on github [here](https://github.com/OpenBCI/OpenBCI_GUI). click on the `Clone or download` button in green on the right, and select `Download ZIP`. If you are a advanced GitHub user, go ahead and clone it, or fork it if you like.
+:::info
+Linux Users
 
-If you downloaded the repository as a zip, please unzip it and you can change the folder name from `OpenBCI_GUI-master` to `OpenBCI_GUI`, if you prefer. You can then place this folder wherever you like (Mac Example: `Users/<user-name>/Documents/GitHub/OpenBCI_GUI`).
+[Here is a walkthrough on how to install Processing on Ubuntu Linux.](http://www.artsnova.com/processing/installing-processing-ubuntu-linux-tutorial.html)
+:::
+
+:::info
+Mac Users
+
+Please use the __Intel 64-bit__ version of Processing 4 on all Mac computers. This will still run great on Apple Silicon. This allows us to continue using libraries that may not have a build for Arm64 architecture.
+:::
+
+### Downloading the code for the OpenBCI GUI
+
+The OpenBCI GUI code repository is located [here on Github](https://github.com/OpenBCI/OpenBCI_GUI). Complete the following steps to download it to your computer:
+
+- Click on the `Clone or download` button in green on the right, and select `Download ZIP`. If you are an advanced GitHub user, go ahead and clone it or fork it as you normally would.
+
+- If you downloaded the repository as a zip, please unzip it. You can change the folder name from `OpenBCI_GUI-master` to `OpenBCI_GUI`, if you prefer. You can then place this folder wherever you like (Mac Example: `Users/<user-name>/Documents/GitHub/OpenBCI_GUI`).
 
 :::info Copy 3rd Party Libraries
-Inside the `OpenBCI_GUI` folder, there is a folder called `libraries`. Theses are the 3rd party libraries that the OpenBCI GUI uses to work it's magic. You need to **copy** all of these folders into:
+Inside the `OpenBCI_GUI` folder, there is a folder called `libraries`. These are the 3rd party libraries that the OpenBCI GUI depends on to work. It's important to **copy all of these folders** into:
 
 On a Mac `Users/<user-name>/Documents/Processing/libraries`  
 On Windows `C:\Users\Username\Documents\Processing\libraries`  
@@ -303,7 +350,7 @@ If you don't know anything about coding, don't edit these files. If you like to 
 
 ![Processing RUN](../../assets/SoftwareImages/OpenBCISoftware/ganglion_processing-RUN.png)
 
-Press the `play` button on the upper left of the IDE, and the sketch will try to launch! 
+Press the `play` button on the upper left of the IDE, and the sketch will try to launch!
 
 If you are encountering issues launching the GUI at this point, please head to the [OpenBCI_GUI section](https://openbci.com/forum/index.php?p=/categories/openbci_gui) of our Forum and look for help or post a question.
 
@@ -312,3 +359,127 @@ If you are encountering issues launching the GUI at this point, please head to t
 **Note: This can only be done with GUI v4.2.0 or earlier.** In order to convert large SD card recordings made using Cyton or Cyton+Daisy, you will need to run the GUI from Processing, but we need to change one crucial setting in Processing's Preferences. As mentioned in the screenshot below, open Processing preferences and increase max available memory to at least 9GB to convert a 12 hour SD recording. Click OK to save these preferences, restart Processing to make sure the changes take effect, and re-launch the GUI.
 
 ![GUI Screenshot convert large SD recording](../../assets/SoftwareImages/OpenBCISoftware/gui_convert_large_SD_recordings_scrnshot.png)
+
+## Exported Data
+
+### Location of saved data
+
+**By default, all GUI recordings are stored in `User/Documents/OpenBCI_GUI/Recordings` on all operating systems.**
+
+### More information about saved data
+
+Data from the GUI is recorded into a `BrainFlow-RAW_date_time` CSV file and `OpenBCI-RAW_date_time` CSV file in txt format. Each GUI session will have its own directory titled `OpenBCISession_date_time`. The picture below shows three recordings within one GUI session.
+
+![GUI data files](../../assets/SoftwareImages/OpenBCISoftware/GUI_data_files.png)
+
+The BrainFlow CSV files are generated by the BrainFlow Streamer feature when set to stream to file. *This feature can also be used to send raw data over a network.* By default, BrainFlow streamer saves data to this folder.
+
+:::tip
+As a general policy, __the OpenBCI GUI will always store unfiltered data to file. These files will also be contiguous.__ This means that if you stop and restart streaming data, a new file will be created within the same Session folder. This allows all users the freedom to select different filters when playing back files in the GUI or in offline data processing pipelines.
+
+If you would like to copy these settings for using in another pipeline (e.g. Matlab), take a screenshot of the [GUI Filter UI](02_GUI_Widget_Guide.md#filters) for reference.
+
+You can also use the exact same BrainFlow filters in every language with a supported binding when playing back a BrainFlow CSV file. For more info, you can refer to the [OpenBCI Software Development Documentation](../../ForDevelopers/01-SoftwareDevelopment.md).
+:::
+
+### Cyton
+
+Here is a table of the column headers and descriptions for the Cyton.
+
+| Column | Name                  | Description                                              |
+| ------ | --------------------- | -------------------------------------------------------- |
+| 1      | Sample Index          | The index of the sample per second (0-250)               |
+| 2      | EXG Channel 0         | EEG/EMG/ECG channel connected to N1P pins                |
+| 3      | EXG Channel 1         | EEG/EMG/ECG channel connected to N2P pins                |
+| 4      | EXG Channel 2         | EEG/EMG/ECG channel connected to N3P pins                |
+| 5      | EXG Channel 3         | EEG/EMG/ECG channel connected to N4P pins                |
+| 6      | EXG Channel 4         | EEG/EMG/ECG channel connected to N5P pins                |
+| 7      | EXG Channel 5         | EEG/EMG/ECG channel connected to N6P pins                |
+| 8      | EXG Channel 6         | EEG/EMG/ECG channel connected to N7P pins                |
+| 9      | EXG Channel 7         | EEG/EMG/ECG channel connected to N8P pins                |
+| 10     | Accel Channel 0       | Accelerometer channel 0 (X)                              |
+| 11     | Accel Channel 1       | Accelerometer channel 1 (Y)                              |
+| 12     | Accel Channel 2       | Accelerometer channel 2 (Z)                              |
+| 13     | Not Used              | See below                                                |
+| 14     | Digital Channel 0 (D11)                 | See below                                                |
+| 15     | Digital Channel 1 (D12)                 | See below                                                |
+| 16     | Digital Channel 2 (D13)                 | See below                                                |
+| 17     | Digital Channel 3 (D17)                 | See below                                                |
+| 18     | Not Used              | See below                                                |
+| 19     | Digital Channel 4 (D18)                 | See below                                                |
+| 20     | Analog Channel 0      | Analog channel 0                                         |
+| 21     | Analog Channel 1      | Analog channel 1                                         |
+| 22     | Analog Channel 2      | Analog channel 2                                         |
+| 23     | Timestamp             | Unix timestamp                                           |
+| 24     | Marker Channel        | Channel for adding manual markers to data                |
+| 25     | Timestamp (Formatted) | Year-Month-Day Hour:Minute:Second (Not in BrainFlow csv) |
+
+Here is a table of the column headers and descriptions for the **Cyton + Daisy**.
+
+| Column | Name                  | Description                                              |
+| ------ | --------------------- | -------------------------------------------------------- |
+| 1      | Sample Index          | The index of the sample per second (0-250)               |
+| 2      | EXG Channel 0         | EEG/EMG/ECG channel connected to N1P pins on Cyton       |
+| 3      | EXG Channel 1         | EEG/EMG/ECG channel connected to N2P pins on Cyton       |
+| 4      | EXG Channel 2         | EEG/EMG/ECG channel connected to N3P pins on Cyton       |
+| 5      | EXG Channel 3         | EEG/EMG/ECG channel connected to N4P pins on Cyton       |
+| 6      | EXG Channel 4         | EEG/EMG/ECG channel connected to N5P pins on Cyton       |
+| 7      | EXG Channel 5         | EEG/EMG/ECG channel connected to N6P pins on Cyton       |
+| 8      | EXG Channel 6         | EEG/EMG/ECG channel connected to N7P pins on Cyton       |
+| 9      | EXG Channel 7         | EEG/EMG/ECG channel connected to N8P pins on Cyton       |
+| 10     | EXG Channel 8         | EEG/EMG/ECG channel connected to N1P pins on Daisy       |
+| 11     | EXG Channel 9         | EEG/EMG/ECG channel connected to N2P pins on Daisy       |
+| 12     | EXG Channel 10        | EEG/EMG/ECG channel connected to N3P pins on Daisy       |
+| 13     | EXG Channel 11        | EEG/EMG/ECG channel connected to N4P pins on Daisy       |
+| 14     | EXG Channel 12        | EEG/EMG/ECG channel connected to N5P pins on Daisy       |
+| 15     | EXG Channel 13        | EEG/EMG/ECG channel connected to N6P pins on Daisy       |
+| 16      | EXG Channel 14        | EEG/EMG/ECG channel connected to N7P pins on Daisy       |
+| 17      | EXG Channel 15        | EEG/EMG/ECG channel connected to N8P pins on Daisy       |
+| 18     | Accel Channel 0       | Accelerometer channel 0 (X)                              |
+| 19     | Accel Channel 1       | Accelerometer channel 1 (Y)                              |
+| 20     | Accel Channel 2       | Accelerometer channel 2 (Z)                              |
+| 21     | Not Used              | See below                                                |
+| 22     | Digital Channel 0 (D11)                 | See below                                                |
+| 23     | Digital Channel 1 (D12)                 | See below                                                |
+| 24     | Digital Channel 2 (D13)                 | See below                                                |
+| 25     | Digital Channel 3 (D17)                 | See below                                                |
+| 26     | Not Used              | See below                                                |
+| 27     | Digital Channel 4 (D18)                 | See below                                                |
+| 28     | Analog Channel 0      | Analog channel 0                                         |
+| 29     | Analog Channel 1      | Analog channel 1                                         |
+| 30     | Analog Channel 2      | Analog channel 2                                         |
+| 31     | Timestamp             | Unix timestamp                                           |
+| 32     | Marker Channel        | Channel for adding manual markers to data                |
+| 33     | Timestamp (Formatted) | Year-Month-Day Hour:Minute:Second (Not in BrainFlow csv) |
+
+:::info Cyton Aux Channels
+In Digital Read mode, the 4th "Other" channel is connected to the D17 pin by default. This pin can be triggered by pressing the "PROG" button. This is useful for adding manual timestamps to your data.
+
+You can also attach your own button to another pin, as shown in [the Puppies and Kittens Experiment](../../Examples/Video_Experiment.md/#step-2-breadboard-setup).
+
+Depending on the [Cyton board mode](../../Cyton/04-OpenBCI_Cyton_SDK.md/#board-mode), the other channels will not display meaningful data. There are three modes currently used by the OpenBCI GUI: default (with Accelerometer), Analog Mode, and Digital Mode. These can be toggled within the appropriate widget during live recording sessions, and data will be displayed when using Playback Mode in the corresponding widgets. We recommend changing your board more _before_ starting your recordings.
+:::
+
+### Ganglion
+
+Here is a table of the column headers and descriptions for the Ganglion.
+
+| Column | OpenBCI-RAW           | Description                                              |
+| ------ | --------------------- | -------------------------------------------------------- |
+| 1      | Sample Index          | The index of the sample per second (0-250)               |
+| 2      | EXG Channel 0         | EEG/EMG/ECG channel connected to N1P pins                |
+| 3      | EXG Channel 1         | EEG/EMG/ECG channel connected to N2P pins                |
+| 4      | EXG Channel 2         | EEG/EMG/ECG channel connected to N3P pins                |
+| 5      | EXG Channel 3         | EEG/EMG/ECG channel connected to N4P pins                |
+| 6      | Accel Channel 0       | Accelerometer channel 0 (X)                              |
+| 7      | Accel Channel 1       | Accelerometer channel 1 (Y)                              |
+| 8      | Accel Channel 2       | Accelerometer channel 2 (Z)                              |
+| 9      | Other                 | Not used                                                 |
+| 10     | Other                 | Not used                                                 |
+| 11     | Other                 | Not used                                                 |
+| 12     | Other                 | Not used                                                 |
+| 13     | Other                 | Not used                                                 |
+| 14     | Timestamp             | Unix timestamp                                           |
+| 15     | Marker Channel        | Channel for adding manual markers to data                |
+| 16     | Timestamp (Formatted) | Year-Month-Day Hour:Minute:Second (Not in BrainFlow csv) |
+

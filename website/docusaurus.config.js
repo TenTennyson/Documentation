@@ -34,7 +34,7 @@ module.exports={
           "customCss": [require.resolve('./src/css/customTheme.css')],
         },
         "gtag": {
-          "trackingID": "UA-42419007-3"
+          "trackingID": "G-HVMLC0ZWWS"
         }
       }
     ]
@@ -53,7 +53,7 @@ module.exports={
           "position": "right"
         },
         {
-          "href": "https://shop.openbci.com",
+          "href": "https://shop.openbci.com/collections/frontpage",
           "label": "Shop",
           "position": "right"
         },
@@ -83,7 +83,7 @@ module.exports={
     metadata: [{name: 'thumbnail', content: 'https://docs.openbci.com/img/openbci-logo-web.png'}],
     "footer": {
       "links": [],
-      "copyright": "Copyright © 2022 OpenBCI",
+      "copyright": "Copyright © 2023 OpenBCI",
       "logo": {
         "src": "img/open-bci-gear-blue.svg"
       }
